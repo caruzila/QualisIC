@@ -1,14 +1,30 @@
 ﻿<!DOCTYPE html>
 <html>
+
+
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title> QUALIS - IC</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <header>
+        <div style="margin-top: -30px; width: 100%; overflow: hidden; margin-bottom: 20px">
+            <div style="float: left; margin-left: 40px;  background-color: blue"><img src="~/Content/images/logo-ufmt.png" /></div>
+            <div style="float: right; margin-right: 40px;  background-color: blue"><img src="~/Content/images/brasao-ufmt.png" /></div>
+            <div style="width: 100%; margin: 0 auto; text-align: center;">
+                <h1>UFMT - Universidade Federal de Mato Grosso</h1>
+                <h2>IC - Instituto de Computação</h2>
+            </div>
+        </div>
+    </header>
+
+    <div  class="navbar navbar-inverse ">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -16,13 +32,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Periódicos", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Conferências", "Conferencias", "Home")</li>
+                    <li>@Html.ActionLink("Correlação de Áreas", "Correlacao", "Home")</li>
+                    <li>@Html.ActionLink("Sobre", "About", "Home")</li>
+
                 </ul>
             </div>
         </div>
@@ -31,7 +48,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Lucas Oliveira</p>
         </footer>
     </div>
 

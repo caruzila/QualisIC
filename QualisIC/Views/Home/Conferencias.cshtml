@@ -1,0 +1,28 @@
+﻿@model IEnumerable<QualisIC.Models.Conferencia>
+
+@{
+    /**/
+
+    ViewBag.Title = "Conferencia";
+}
+
+
+
+
+
+<table class="table">
+    <tr>
+        <th>@Html.DisplayName("Sigla")</th>
+        <th>@Html.DisplayName("Conferencia")</th>
+        <th>@Html.DisplayName("Extrato Capes")</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Sigla)</td>
+            <td>@Html.DisplayFor(modelItem => item.Conferencia_name)</td>
+            <td>@Html.DisplayFor(modelItem => item.Extrato)</td>
+
+        </tr>
+    }
+</table>
