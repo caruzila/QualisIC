@@ -1,27 +1,60 @@
-﻿@model IEnumerable<QualisIC.Models.Extrato>
+﻿@model PagedList.IPagedList<QualisIC.Models.Extrato>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
-@{
-    /**/
 
-    
+<div class="row">
+    <div class="col-md-1" style=" border-right-color: darkgrey">
+        <label style="font-size: large">Filtros</label>
+        <!-- using (Html.BeginForm("Index", "Student", FormMethod.Get))-->
+        @using (Html.BeginForm())
+        {
+            <div>
+                <!--<label style="font-size: small; font-weight: normal; margin-top: 10px">ISSN</label>
+                Html.TextBox("searchISSN")
+                -->
+                <label style="font-size: small; font-weight: normal; margin-top: 10px">Periódico</label>
+                @Html.TextBox("searchPeriodico", ViewBag.CurrentFilter as string)
+                <!--
+                <label style="font-size: small; font-weight: normal; margin-top: 10px">Área</label>
 
-}
+                <select >
+                    <option value="selecionar">Selecionar</option>
+                </select>
 
-<table class="table">
-    <tr>
-        <th>@Html.ActionLink("ISSN", "Index", new {sortOrder = ViewBag.ISSNSortParm})</th>
-        <th>@Html.ActionLink("Periódico", "Index", new { sortOrder = ViewBag.PeriodicoSortParm})</th>
-        <th>@Html.ActionLink("Área", "Index", new { sortOrder = ViewBag.AreaSortParm})</th>
-        <th>@Html.ActionLink("Extrato Capes", "Index", new { sortOrder = ViewBag.ExtratoSortParm })</th>
-    </tr>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@Html.DisplayFor(modelItem => item.Periodico.ISSN)</td>
-            <td>@Html.DisplayFor(modelItem => item.Periodico.Periodico_name)</td>
-            <td>@Html.DisplayFor(modelItem => item.Area.Area_name)</td>
-            <td>@Html.DisplayFor(modelItem => item.Extrato_nota)</td>
+                <label style="font-size: small; font-weight: normal; margin-top: 10px">Extrato</label>
+                Html.TextBox("searchExtrato")
+                -->
 
-        </tr>
-    }
-</table>
+                <input style="margin-top: 15px" type="submit" value="Aplicar filtros" />
+
+            </div>
+
+        }
+    </div>
+    <div class="col-md-11">
+        <table class="table">
+            <tr>
+                <th>@Html.ActionLink("ISSN", "Index", new { sortOrder = ViewBag.ISSNSortParm, currentFilter = ViewBag.CurrentFilter })</th>
+                <th>@Html.ActionLink("Periódico", "Index", new { sortOrder = ViewBag.PeriodicoSortParm, currentFilter = ViewBag.CurrentFilter })</th>
+                <th>@Html.ActionLink("Área", "Index", new { sortOrder = ViewBag.AreaSortParm, currentFilter = ViewBag.CurrentFilter })</th>
+                <th>@Html.ActionLink("Extrato Capes", "Index", new { sortOrder = ViewBag.ExtratoSortParm, currentFilter = ViewBag.CurrentFilter })</th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Periodico.ISSN)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Periodico.Periodico_name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Area.Area_name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Extrato_nota)</td>
+
+                </tr>
+            }
+        </table>
+        <br />
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+    </div>
+</div>

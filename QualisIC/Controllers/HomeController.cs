@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using PagedList;
 
 
 namespace QualisIC.Controllers
@@ -16,15 +17,32 @@ namespace QualisIC.Controllers
         {
             db = new QualisDbContext();
         }
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchPeriodico, int? page /*, string searchISSN, string searchExtrato*/)
         {
+            ViewBag.CurrentSort = sortOrder;
             ViewBag.PeriodicoSortParm = String.IsNullOrEmpty(sortOrder) ? "Periodico_desc" : "";
             ViewBag.ISSNSortParm = sortOrder == "ISSN" ? "ISSN_desc" : "ISSN";
             ViewBag.AreaSortParm = sortOrder == "Area" ? "Area_desc" : "Area";
             ViewBag.ExtratoSortParm = sortOrder == "Extrato" ? "Extrato_desc" : "Extrato";
 
+            if (searchPeriodico != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchPeriodico = currentFilter;                
+            }
+
+            ViewBag.CurrentFilter = searchPeriodico;
+
             var extratos = from e in db.Extratos select e;
-           switch (sortOrder)
+
+            if ( !String.IsNullOrEmpty(searchPeriodico) /*|| !String.IsNullOrEmpty(searchISSN) || !String.IsNullOrEmpty(searchExtrato)*/)
+            {
+                extratos = extratos.Where(e => e.Periodico.Periodico_name.Contains(searchPeriodico));
+            }
+            switch (sortOrder)
             {
                 case "Periodico_desc":
                     extratos = extratos.OrderByDescending(e => e.Periodico.Periodico_name);
@@ -51,7 +69,10 @@ namespace QualisIC.Controllers
                     extratos = extratos.OrderBy(e => e.Periodico.Periodico_name);
                     break;
             }
-            return View(extratos.ToList());
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            return View(extratos.ToPagedList(pageNumber, pageSize));
+            
         }
 
         public ActionResult About()
