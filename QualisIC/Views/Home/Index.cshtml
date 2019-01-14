@@ -3,37 +3,39 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 
-<div class="row">
-    <div class="col-md-1" style=" border-right-color: darkgrey">
-        <label style="font-size: large">Filtros</label>
-        <!-- using (Html.BeginForm("Index", "Student", FormMethod.Get))-->
+<div class="row" style="margin-left: 10px; margin-right: 10px">
+    <div>
+        <div style="float:left">
+            <label style="font-size: large">Filtros</label>
+        </div>
+        <!-- using (Html.BeginForm("Index", "Home", FormMethod.Get))-->
         @using (Html.BeginForm())
         {
             <div>
-                <!--<label style="font-size: small; font-weight: normal; margin-top: 10px">ISSN</label>
-                Html.TextBox("searchISSN")
-                -->
-                <label style="font-size: small; font-weight: normal; margin-top: 10px">Periódico</label>
+                <label style="font-size: small; font-weight: normal; margin-left: 40px">ISSN:</label>
+                @Html.TextBox("searchISSN")
+                
+                <label style="font-size: small; font-weight: normal; margin-left: 40px">Periódico:</label>
                 @Html.TextBox("searchPeriodico", ViewBag.CurrentFilter as string)
-                <!--
-                <label style="font-size: small; font-weight: normal; margin-top: 10px">Área</label>
+                
+                <label style="font-size: small; font-weight: normal; margin-left: 40px">Extrato:</label>
+                @Html.TextBox("searchExtrato")
+                
+                <label style="font-size: small; font-weight: normal; margin-left: 40px">Area:</label>
 
-                <select >
+                <select style="font-size: small; font-weight: normal; width: 150px; height: 26px">
                     <option value="selecionar">Selecionar</option>
-                </select>
+                </select>               
+                
 
-                <label style="font-size: small; font-weight: normal; margin-top: 10px">Extrato</label>
-                Html.TextBox("searchExtrato")
-                -->
-
-                <input style="margin-top: 15px" type="submit" value="Aplicar filtros" />
+                <input type="submit" value="Aplicar filtros" style="margin-left: 40px"/>
 
             </div>
 
         }
     </div>
-    <div class="col-md-11">
-        <table class="table">
+    <div >
+        <table class="table" style="margin-top: 10px">
             <tr>
                 <th>@Html.ActionLink("ISSN", "Index", new { sortOrder = ViewBag.ISSNSortParm, currentFilter = ViewBag.CurrentFilter })</th>
                 <th>@Html.ActionLink("Periódico", "Index", new { sortOrder = ViewBag.PeriodicoSortParm, currentFilter = ViewBag.CurrentFilter })</th>

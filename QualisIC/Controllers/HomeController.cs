@@ -17,7 +17,7 @@ namespace QualisIC.Controllers
         {
             db = new QualisDbContext();
         }
-        public ActionResult Index(string sortOrder, string currentFilter, string searchPeriodico, int? page /*, string searchISSN, string searchExtrato*/)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchPeriodico, int? page , string searchISSN, string searchExtrato)
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.PeriodicoSortParm = String.IsNullOrEmpty(sortOrder) ? "Periodico_desc" : "";
@@ -38,9 +38,17 @@ namespace QualisIC.Controllers
 
             var extratos = from e in db.Extratos select e;
 
-            if ( !String.IsNullOrEmpty(searchPeriodico) /*|| !String.IsNullOrEmpty(searchISSN) || !String.IsNullOrEmpty(searchExtrato)*/)
+            if ( !String.IsNullOrEmpty(searchPeriodico))
             {
                 extratos = extratos.Where(e => e.Periodico.Periodico_name.Contains(searchPeriodico));
+            }
+            if (!String.IsNullOrEmpty(searchISSN))
+            {
+                extratos = extratos.Where(e => e.Periodico.ISSN == searchISSN);
+            }
+            if (!String.IsNullOrEmpty(searchExtrato))
+            {
+                extratos = extratos.Where(e => e.Extrato_nota.Contains(searchExtrato));
             }
             switch (sortOrder)
             {
