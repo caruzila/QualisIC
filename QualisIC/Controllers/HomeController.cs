@@ -5,7 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using PagedList;
-
+using QualisIC.Models.ViewModel;
+using System.Data.Entity;
 
 namespace QualisIC.Controllers
 {
@@ -17,40 +18,39 @@ namespace QualisIC.Controllers
         {
             db = new QualisDbContext();
         }
-        public ActionResult Index(string sortOrder, string currentFilter, string searchPeriodico, int? page , string searchISSN, string searchExtrato)
+        public ActionResult Index(PeriodicoViewModel vm)
         {
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.PeriodicoSortParm = String.IsNullOrEmpty(sortOrder) ? "Periodico_desc" : "";
-            ViewBag.ISSNSortParm = sortOrder == "ISSN" ? "ISSN_desc" : "ISSN";
-            ViewBag.AreaSortParm = sortOrder == "Area" ? "Area_desc" : "Area";
-            ViewBag.ExtratoSortParm = sortOrder == "Extrato" ? "Extrato_desc" : "Extrato";
-
-            if (searchPeriodico != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchPeriodico = currentFilter;                
-            }
-
-            ViewBag.CurrentFilter = searchPeriodico;
+            ViewBag.CurrentSort = vm.sortOrder;
+            ViewBag.PeriodicoSortParm = String.IsNullOrEmpty(vm.sortOrder) ? "Periodico_desc" : "";
+            ViewBag.ISSNSortParm = vm.sortOrder == "ISSN" ? "ISSN_desc" : "ISSN";
+            ViewBag.AreaSortParm = vm.sortOrder == "Area" ? "Area_desc" : "Area";
+            ViewBag.ExtratoSortParm = vm.sortOrder == "Extrato" ? "Extrato_desc" : "Extrato";
+            
+            ViewBag.CurrentFilter = vm.searchPeriodico;
 
             var extratos = from e in db.Extratos select e;
+            var areaModel = from a in db.Areas select a;
 
-            if ( !String.IsNullOrEmpty(searchPeriodico))
+            ViewBag.AreaModel = areaModel.ToList();
+
+            if (!String.IsNullOrEmpty(vm.searchPeriodico))
             {
-                extratos = extratos.Where(e => e.Periodico.Periodico_name.Contains(searchPeriodico));
+                //extratos = extratos.Where(e => e.Periodico.Periodico_name.Contains(vm.searchPeriodico));
+                extratos = extratos.Where(e => DbFunctions.Like(e.Periodico.Periodico_name.ToUpper(), "%"+vm.searchPeriodico.ToUpper()+"%"));
             }
-            if (!String.IsNullOrEmpty(searchISSN))
+            if (!String.IsNullOrEmpty(vm.searchISSN))
             {
-                extratos = extratos.Where(e => e.Periodico.ISSN == searchISSN);
+                extratos = extratos.Where(e => e.Periodico.ISSN == vm.searchISSN);
             }
-            if (!String.IsNullOrEmpty(searchExtrato))
+            if (!String.IsNullOrEmpty(vm.searchExtrato))
             {
-                extratos = extratos.Where(e => e.Extrato_nota.Contains(searchExtrato));
+                extratos = extratos.Where(e => e.Extrato_nota.Contains(vm.searchExtrato));
             }
-            switch (sortOrder)
+            if (!String.IsNullOrEmpty(vm.searchArea))
+            {
+                extratos = extratos.Where(e => e.Area.Area_name.Contains(vm.searchArea));
+            }
+            switch (vm.sortOrder)
             {
                 case "Periodico_desc":
                     extratos = extratos.OrderByDescending(e => e.Periodico.Periodico_name);
@@ -78,11 +78,14 @@ namespace QualisIC.Controllers
                     break;
             }
             int pageSize = 2;
-            int pageNumber = (page ?? 1);
-            return View(extratos.ToPagedList(pageNumber, pageSize));
-            
+            int pageNumber = (vm.page ?? 1);
+            vm.lista = extratos.ToPagedList(pageNumber, pageSize);
+            return View(vm);
+
         }
 
+        
+        
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

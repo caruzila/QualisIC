@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<QualisIC.Models.Extrato>
+﻿@model QualisIC.Models.ViewModel.PeriodicoViewModel
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
@@ -11,52 +11,48 @@
         <!-- using (Html.BeginForm("Index", "Home", FormMethod.Get))-->
         @using (Html.BeginForm())
         {
-            <div>
-                <label style="font-size: small; font-weight: normal; margin-left: 40px">ISSN:</label>
-                @Html.TextBox("searchISSN")
-                
-                <label style="font-size: small; font-weight: normal; margin-left: 40px">Periódico:</label>
-                @Html.TextBox("searchPeriodico", ViewBag.CurrentFilter as string)
-                
-                <label style="font-size: small; font-weight: normal; margin-left: 40px">Extrato:</label>
-                @Html.TextBox("searchExtrato")
-                
-                <label style="font-size: small; font-weight: normal; margin-left: 40px">Area:</label>
+        <div>
+            <label style="font-size: small; font-weight: normal; margin-left: 40px">ISSN:</label>
+            @Html.TextBox("searchISSN")
 
-                <select style="font-size: small; font-weight: normal; width: 150px; height: 26px">
-                    <option value="selecionar">Selecionar</option>
-                </select>               
-                
+            <label style="font-size: small; font-weight: normal; margin-left: 40px">Periódico:</label>
+            @Html.TextBox("searchPeriodico", ViewBag.CurrentFilter as string)
 
-                <input type="submit" value="Aplicar filtros" style="margin-left: 40px"/>
+            <label style="font-size: small; font-weight: normal; margin-left: 40px">Extrato:</label>
+            @Html.TextBox("searchExtrato")
 
-            </div>
+            <label style="font-size: small; font-weight: normal; margin-left: 40px">Area:</label>
+            @Html.DropDownList("searchArea", new SelectList(ViewBag.AreaModel, "Area_name", "Area_name"), "Selecionar")
+
+            <input type="submit" value="Aplicar filtros" style="margin-left: 40px" class="btn btn-primary" />
+            @Html.HiddenFor(model => model.page, 1)
+        </div>
 
         }
     </div>
-    <div >
+    <div>
         <table class="table" style="margin-top: 10px">
             <tr>
                 <th>@Html.ActionLink("ISSN", "Index", new { sortOrder = ViewBag.ISSNSortParm, currentFilter = ViewBag.CurrentFilter })</th>
                 <th>@Html.ActionLink("Periódico", "Index", new { sortOrder = ViewBag.PeriodicoSortParm, currentFilter = ViewBag.CurrentFilter })</th>
-                <th>@Html.ActionLink("Área", "Index", new { sortOrder = ViewBag.AreaSortParm, currentFilter = ViewBag.CurrentFilter })</th>
                 <th>@Html.ActionLink("Extrato Capes", "Index", new { sortOrder = ViewBag.ExtratoSortParm, currentFilter = ViewBag.CurrentFilter })</th>
+                <th>@Html.ActionLink("Área", "Index", new { sortOrder = ViewBag.AreaSortParm, currentFilter = ViewBag.CurrentFilter })</th>
             </tr>
-            @foreach (var item in Model)
+            @foreach (var item in Model.lista)
             {
                 <tr>
                     <td>@Html.DisplayFor(modelItem => item.Periodico.ISSN)</td>
                     <td>@Html.DisplayFor(modelItem => item.Periodico.Periodico_name)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Area.Area_name)</td>
                     <td>@Html.DisplayFor(modelItem => item.Extrato_nota)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Area.Area_name)</td>
 
                 </tr>
             }
         </table>
         <br />
-        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        Page @(Model.lista.PageCount < Model.lista.PageNumber ? 0 : Model.lista.PageNumber) of @Model.lista.PageCount
 
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        @Html.PagedListPager(Model.lista, page => Url.Action("Index", new { page, sortOrder = Model.sortOrder, searchArea = Model.searchArea, searchExtrato  = Model.searchExtrato, searchISSN = Model.searchISSN, searchPeriodico = Model.searchPeriodico}))
 
     </div>
 </div>
