@@ -17,5 +17,7 @@ namespace QualisIC.Models
         public string Conferencia_name { get; set; }
 
         public string Extrato { get; set; }
+
+        public string Area_name { get; set; }
     }
 }

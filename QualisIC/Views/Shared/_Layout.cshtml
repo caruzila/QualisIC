@@ -32,10 +32,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Periódicos", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <!--Html.ActionLink("Periódicos", "Index", "Home", new { area = "" }, new { class = "navbar-brand" })-->
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Periódicos", "Index", "Home")</li>
                     <li>@Html.ActionLink("Conferências", "Conferencias", "Home")</li>
                     <li>@Html.ActionLink("Correlação de Áreas", "Correlacao", "Home")</li>
                     <li>@Html.ActionLink("Sobre", "About", "Home")</li>
@@ -47,8 +48,15 @@
     <div class="container body-content" style="width:100%">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Lucas Oliveira</p>
+        <footer style="text-align:center">
+            <p>Visualização interativa dos Qualis de Conferências e Periódicos desenvolvido por Lucas J.D Oliveira sob orientação e supervisão dos professores Dr. Raphael de Souza e Dr. Thiago Meirelles Ventura do Instituto de Computação da UFMT. </p>
+            <p>
+                <strong>Contato:</strong>
+                <span>lu4cap@gmail.com, raphael@ic.ufmt.br</span>
+            </p>
+            <p>
+                <a href="http://ic.ufmt.br" target="blank">ic.ufmt.br</a>
+            </p>
         </footer>
     </div>
 

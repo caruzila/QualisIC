@@ -169,6 +169,9 @@
     <Compile Include="Models\Extrato.cs" />
     <Compile Include="Models\Periodico.cs" />
     <Compile Include="Models\QualisDbContext.cs" />
+    <Compile Include="Models\ViewModel\ConferenciaViewModel.cs" />
+    <Compile Include="Models\ViewModel\CorrelacaoViewModel.cs" />
+    <Compile Include="Models\ViewModel\CorrelacaoVM.cs" />
     <Compile Include="Models\ViewModel\PeriodicoViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

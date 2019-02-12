@@ -6,26 +6,26 @@
 <div class="row" style="margin-left: 10px; margin-right: 10px">
     <div>
         <div style="float:left">
-            <label style="font-size: large">Filtros</label>
+            <label style="font-size: large">Filtros:</label>
         </div>
         <!-- using (Html.BeginForm("Index", "Home", FormMethod.Get))-->
         @using (Html.BeginForm())
         {
         <div>
-            <label style="font-size: small; font-weight: normal; margin-left: 40px">ISSN:</label>
+            <label style="font-size: small; font-weight: normal; margin-left: 20px">ISSN:</label>
             @Html.TextBox("searchISSN")
 
-            <label style="font-size: small; font-weight: normal; margin-left: 40px">Periódico:</label>
+            <label style="font-size: small; font-weight: normal; margin-left: 20px">Periódico:</label>
             @Html.TextBox("searchPeriodico", ViewBag.CurrentFilter as string)
 
-            <label style="font-size: small; font-weight: normal; margin-left: 40px">Extrato:</label>
+            <label style="font-size: small; font-weight: normal; margin-left: 20px">Extrato:</label>
             @Html.TextBox("searchExtrato")
 
-            <label style="font-size: small; font-weight: normal; margin-left: 40px">Area:</label>
-            @Html.DropDownList("searchArea", new SelectList(ViewBag.AreaModel, "Area_name", "Area_name"), "Selecionar")
+            <label style="font-size: small; font-weight: normal; margin-left: 20px">Area:</label>
+            @Html.DropDownList("searchArea", new SelectList(ViewBag.AreaModel, "Area_ID", "Area_name"), "Selecionar")
 
-            <input type="submit" value="Aplicar filtros" style="margin-left: 40px" class="btn btn-primary" />
-            @Html.HiddenFor(model => model.page, 1)
+            <input type="submit" value="Aplicar filtros" style="margin-left: 20px" class="btn btn-primary" />
+            <input type="hidden" name="page" id="page" value="1"/>
         </div>
 
         }
@@ -33,12 +33,12 @@
     <div>
         <table class="table" style="margin-top: 10px">
             <tr>
-                <th>@Html.ActionLink("ISSN", "Index", new { sortOrder = ViewBag.ISSNSortParm, currentFilter = ViewBag.CurrentFilter })</th>
-                <th>@Html.ActionLink("Periódico", "Index", new { sortOrder = ViewBag.PeriodicoSortParm, currentFilter = ViewBag.CurrentFilter })</th>
-                <th>@Html.ActionLink("Extrato Capes", "Index", new { sortOrder = ViewBag.ExtratoSortParm, currentFilter = ViewBag.CurrentFilter })</th>
-                <th>@Html.ActionLink("Área", "Index", new { sortOrder = ViewBag.AreaSortParm, currentFilter = ViewBag.CurrentFilter })</th>
+                <th>@Html.ActionLink("ISSN", "Index", new { sortOrder = ViewBag.ISSNSortParm, searchPeriodico = ViewBag.filterPeriodico, searchISSN = ViewBag.filterISSN, searchExtrato = ViewBag.filterExtrato, searchArea = ViewBag.filterArea })</th>
+                <th>@Html.ActionLink("Periódico", "Index", new { sortOrder = ViewBag.PeriodicoSortParm, searchPeriodico = ViewBag.filterPeriodico, searchISSN = ViewBag.filterISSN, searchExtrato = ViewBag.filterExtrato, searchArea = ViewBag.filterArea })</th>
+                <th>@Html.ActionLink("Extrato Capes", "Index", new { sortOrder = ViewBag.ExtratoSortParm, searchPeriodico = ViewBag.filterPeriodico, searchISSN = ViewBag.filterISSN, searchExtrato = ViewBag.filterExtrato, searchArea = ViewBag.filterArea })</th>
+                <th>@Html.ActionLink("Área", "Index", new { sortOrder = ViewBag.AreaSortParm, searchPeriodico = ViewBag.filterPeriodico, searchISSN = ViewBag.filterISSN, searchExtrato = ViewBag.filterExtrato, searchArea = ViewBag.filterArea })</th>
             </tr>
-            @foreach (var item in Model.lista)
+            @foreach (var item in Model.listap)
             {
                 <tr>
                     <td>@Html.DisplayFor(modelItem => item.Periodico.ISSN)</td>
@@ -50,9 +50,9 @@
             }
         </table>
         <br />
-        Page @(Model.lista.PageCount < Model.lista.PageNumber ? 0 : Model.lista.PageNumber) of @Model.lista.PageCount
+        Page @(Model.listap.PageCount < Model.listap.PageNumber ? 0 : Model.listap.PageNumber) of @Model.listap.PageCount
 
-        @Html.PagedListPager(Model.lista, page => Url.Action("Index", new { page, sortOrder = Model.sortOrder, searchArea = Model.searchArea, searchExtrato  = Model.searchExtrato, searchISSN = Model.searchISSN, searchPeriodico = Model.searchPeriodico}))
+        @Html.PagedListPager(Model.listap, page => Url.Action("Index", new { page, sortOrder = Model.sortOrder, searchArea = Model.searchArea, searchExtrato = Model.searchExtrato, searchISSN = Model.searchISSN, searchPeriodico = Model.searchPeriodico }))
 
     </div>
 </div>

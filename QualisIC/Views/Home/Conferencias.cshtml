@@ -1,28 +1,58 @@
-﻿@model IEnumerable<QualisIC.Models.Conferencia>
-
-@{
-    /**/
-
-    ViewBag.Title = "Conferencia";
-}
+﻿@model QualisIC.Models.ViewModel.ConferenciaViewModel
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 
+<div class="row" style="margin-left: 10px; margin-right: 10px">
+    <div>
+        <div style="float:left">
+            <label style="font-size: large">Filtros:</label>
+        </div>
+        <!-- using (Html.BeginForm("Index", "Home", FormMethod.Get))-->
+        @using (Html.BeginForm())
+        {
+            <div>
+                <label style="font-size: small; font-weight: normal; margin-left: 20px">Sigla:</label>
+                @Html.TextBox("searchSigla")
 
+                <label style="font-size: small; font-weight: normal; margin-left: 20px">Conferência:</label>
+                @Html.TextBox("searchConferencia", ViewBag.CurrentFilter as string)
 
+                <label style="font-size: small; font-weight: normal; margin-left: 20px">Extrato:</label>
+                @Html.TextBox("searchExtratoc")
 
-<table class="table">
-    <tr>
-        <th>@Html.DisplayName("Sigla")</th>
-        <th>@Html.DisplayName("Conferencia")</th>
-        <th>@Html.DisplayName("Extrato Capes")</th>
-    </tr>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@Html.DisplayFor(modelItem => item.Sigla)</td>
-            <td>@Html.DisplayFor(modelItem => item.Conferencia_name)</td>
-            <td>@Html.DisplayFor(modelItem => item.Extrato)</td>
+                <label style="font-size: small; font-weight: normal; margin-left: 20px">Area:</label>
+                @Html.DropDownList("searchAreac", new SelectList(ViewBag.AreaModelc), "Selecionar")
 
-        </tr>
-    }
-</table>
+                <input type="submit" value="Aplicar filtros" style="margin-left: 20px" class="btn btn-primary" />
+                <input type="hidden" id="page" name="page" value="1">
+            </div>
+
+        }
+    </div>
+    <div>
+        <table class="table" style="margin-top: 10px">
+            <tr>
+                <th>@Html.ActionLink("Sigla", "Conferencias", new { sortOrderc = ViewBag.SiglaSortParm, searchSigla = ViewBag.filterSigla, searchExtratoc = ViewBag.filterExtratoc, searchAreac = ViewBag.filterAreac, searchConferencia = ViewBag.filterConferencia })</th>
+                <th>@Html.ActionLink("Conferencia", "Conferencias", new { sortOrderc = ViewBag.ConferenciaSortParm, searchSigla = ViewBag.filterSigla, searchExtratoc = ViewBag.filterExtratoc, searchAreac = ViewBag.filterAreac, searchConferencia = ViewBag.filterConferencia })</th>
+                <th>@Html.ActionLink("Extrato Capes", "Conferencias", new { sortOrderc = ViewBag.ExtratocSortParm, searchSigla = ViewBag.filterSigla, searchExtratoc = ViewBag.filterExtratoc, searchAreac = ViewBag.filterAreac, searchConferencia = ViewBag.filterConferencia })</th>
+                <th>@Html.ActionLink("Área", "Conferencias", new { sortOrderc = ViewBag.AreacSortParm, searchSigla = ViewBag.filterSigla, searchExtratoc = ViewBag.filterExtratoc, searchAreac = ViewBag.filterAreac, searchConferencia = ViewBag.filterConferencia })</th>
+            </tr>
+            @foreach (var itemc in Model.listac)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => itemc.Sigla)</td>
+                    <td>@Html.DisplayFor(modelItem => itemc.Conferencia_name)</td>
+                    <td>@Html.DisplayFor(modelItem => itemc.Extrato)</td>
+                    <td>@Html.DisplayFor(modelItem => itemc.Area_name)</td>
+
+                </tr>
+            }
+        </table>
+        <br />
+        Page @(Model.listac.PageCount < Model.listac.PageNumber ? 0 : Model.listac.PageNumber) of @Model.listac.PageCount
+
+        @Html.PagedListPager(Model.listac, page => Url.Action("Conferencias", new { page, sortOrderc = Model.sortOrderc, searchAreac = Model.searchAreac, searchExtratoc = Model.searchExtratoc, searchSigla = Model.searchSigla, searchConferencia = Model.searchConferencia }))
+
+    </div>
+</div>
