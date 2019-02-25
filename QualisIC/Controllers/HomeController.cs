@@ -33,9 +33,10 @@ namespace QualisIC.Controllers
 
             var extratos = from e in db.Extratos select e;
             var areaModel = from a in db.Areas select a;
+            var classificacaoModel = from c in db.Classificacaos select c;
 
             ViewBag.AreaModel = areaModel.ToList();
-
+            ViewBag.ClassificacaoModel = classificacaoModel.ToList();
             if (!String.IsNullOrEmpty(vm.searchPeriodico))
             {
                 ViewBag.CurrentFilter = vm.searchPeriodico;
@@ -53,6 +54,10 @@ namespace QualisIC.Controllers
             if (vm.searchArea > 0)
             {
                 extratos = extratos.Where(e => e.Area.Area_ID == vm.searchArea);
+            }
+            if (vm.searchClassificacao > 0)
+            {
+                extratos = extratos.Where(e => e.Classificacao.Classificacao_ID == vm.searchClassificacao);
             }
 
             switch (vm.sortOrder)

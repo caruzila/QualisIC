@@ -16,6 +16,8 @@ namespace QualisIC.Models.ViewModel
         public string searchExtrato { get; set; }
         public int searchArea { get; set; }
 
+        public int searchClassificacao { get; set; }
+
         public PagedList.IPagedList<QualisIC.Models.Extrato> listap { get; set; }
 
     }

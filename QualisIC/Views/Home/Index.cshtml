@@ -3,56 +3,58 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 
-<div class="row" style="margin-left: 10px; margin-right: 10px">
-    <div>
-        <div style="float:left">
-            <label style="font-size: large">Filtros:</label>
+<!-- using (Html.BeginForm("Index", "Home", FormMethod.Get))-->
+@using (Html.BeginForm())
+{
+    <div class="container rowFiltro">
+        <div style="width: 100%" class="row form-inline">
+            <div class="col-2">
+                @Html.TextBox("searchISSN", "Filtrar por ISSN", new { @class = "form-control inputFiltro" })
+            </div>
+            <div class="col-2">
+                @Html.TextBox("searchPeriodico", "Filtrar por Periodico", new { @class = "form-control inputFiltro" })
+            </div>
+            <div class="col-2">
+                @Html.TextBox("searchExtrato", "Filtrar por Extrato", new { @class = "form-control inputFiltro" })
+            </div>
+            <div class="col-2">
+                @Html.DropDownList("searchArea", new SelectList(ViewBag.AreaModel, "Area_ID", "Area_name"), "Selecionar Area", new { @class = "dropdown btn dropdown-toggle dropdownArea inputFiltro" })
+            </div>
+            <div class="col-2">
+                @Html.DropDownList("searchClassificacao", new SelectList(ViewBag.ClassificacaoModel, "Classificacao_ID", "Classificacao_name"), "Selecionar Classificação", new { @class = "dropdown btn dropdown-toggle dropdownArea inputFiltro" })
+            </div>
+            <div class="col-2">
+                <input type="submit" value="Aplicar filtros" style="margin-left: 20px" class="btn btn-primary" />
+                <input type="hidden" name="page" id="page" value="1" />
+            </div>
+
+
         </div>
-        <!-- using (Html.BeginForm("Index", "Home", FormMethod.Get))-->
-        @using (Html.BeginForm())
+    </div>
+}
+<div style="width: 100%">
+    <table class="table" style="margin-top: 10px">
+        <tr>
+            <th>@Html.ActionLink("ISSN", "Index", new { sortOrder = ViewBag.ISSNSortParm, searchPeriodico = ViewBag.filterPeriodico, searchISSN = ViewBag.filterISSN, searchExtrato = ViewBag.filterExtrato, searchArea = ViewBag.filterArea })</th>
+            <th>@Html.ActionLink("Periódico", "Index", new { sortOrder = ViewBag.PeriodicoSortParm, searchPeriodico = ViewBag.filterPeriodico, searchISSN = ViewBag.filterISSN, searchExtrato = ViewBag.filterExtrato, searchArea = ViewBag.filterArea })</th>
+            <th>@Html.ActionLink("Extrato Capes", "Index", new { sortOrder = ViewBag.ExtratoSortParm, searchPeriodico = ViewBag.filterPeriodico, searchISSN = ViewBag.filterISSN, searchExtrato = ViewBag.filterExtrato, searchArea = ViewBag.filterArea })</th>
+            <th>@Html.ActionLink("Área", "Index", new { sortOrder = ViewBag.AreaSortParm, searchPeriodico = ViewBag.filterPeriodico, searchISSN = ViewBag.filterISSN, searchExtrato = ViewBag.filterExtrato, searchArea = ViewBag.filterArea })</th>
+        </tr>
+        @foreach (var item in Model.listap)
         {
-        <div>
-            <label style="font-size: small; font-weight: normal; margin-left: 20px">ISSN:</label>
-            @Html.TextBox("searchISSN")
-
-            <label style="font-size: small; font-weight: normal; margin-left: 20px">Periódico:</label>
-            @Html.TextBox("searchPeriodico", ViewBag.CurrentFilter as string)
-
-            <label style="font-size: small; font-weight: normal; margin-left: 20px">Extrato:</label>
-            @Html.TextBox("searchExtrato")
-
-            <label style="font-size: small; font-weight: normal; margin-left: 20px">Area:</label>
-            @Html.DropDownList("searchArea", new SelectList(ViewBag.AreaModel, "Area_ID", "Area_name"), "Selecionar")
-
-            <input type="submit" value="Aplicar filtros" style="margin-left: 20px" class="btn btn-primary" />
-            <input type="hidden" name="page" id="page" value="1"/>
-        </div>
-
-        }
-    </div>
-    <div>
-        <table class="table" style="margin-top: 10px">
             <tr>
-                <th>@Html.ActionLink("ISSN", "Index", new { sortOrder = ViewBag.ISSNSortParm, searchPeriodico = ViewBag.filterPeriodico, searchISSN = ViewBag.filterISSN, searchExtrato = ViewBag.filterExtrato, searchArea = ViewBag.filterArea })</th>
-                <th>@Html.ActionLink("Periódico", "Index", new { sortOrder = ViewBag.PeriodicoSortParm, searchPeriodico = ViewBag.filterPeriodico, searchISSN = ViewBag.filterISSN, searchExtrato = ViewBag.filterExtrato, searchArea = ViewBag.filterArea })</th>
-                <th>@Html.ActionLink("Extrato Capes", "Index", new { sortOrder = ViewBag.ExtratoSortParm, searchPeriodico = ViewBag.filterPeriodico, searchISSN = ViewBag.filterISSN, searchExtrato = ViewBag.filterExtrato, searchArea = ViewBag.filterArea })</th>
-                <th>@Html.ActionLink("Área", "Index", new { sortOrder = ViewBag.AreaSortParm, searchPeriodico = ViewBag.filterPeriodico, searchISSN = ViewBag.filterISSN, searchExtrato = ViewBag.filterExtrato, searchArea = ViewBag.filterArea })</th>
+                <td>@Html.DisplayFor(modelItem => item.Periodico.ISSN)</td>
+                <td>@Html.DisplayFor(modelItem => item.Periodico.Periodico_name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Extrato_nota)</td>
+                <td>@Html.DisplayFor(modelItem => item.Area.Area_name)</td>
+
             </tr>
-            @foreach (var item in Model.listap)
-            {
-                <tr>
-                    <td>@Html.DisplayFor(modelItem => item.Periodico.ISSN)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Periodico.Periodico_name)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Extrato_nota)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Area.Area_name)</td>
+        }
+    </table>
+    <br />
+    Page @(Model.listap.PageCount < Model.listap.PageNumber ? 0 : Model.listap.PageNumber) of @Model.listap.PageCount
 
-                </tr>
-            }
-        </table>
-        <br />
-        Page @(Model.listap.PageCount < Model.listap.PageNumber ? 0 : Model.listap.PageNumber) of @Model.listap.PageCount
+    @Html.PagedListPager(Model.listap, page => Url.Action("Index", new { page, sortOrder = Model.sortOrder, searchArea = Model.searchArea, searchExtrato = Model.searchExtrato, searchISSN = Model.searchISSN, searchPeriodico = Model.searchPeriodico }))
 
-        @Html.PagedListPager(Model.listap, page => Url.Action("Index", new { page, sortOrder = Model.sortOrder, searchArea = Model.searchArea, searchExtrato = Model.searchExtrato, searchISSN = Model.searchISSN, searchPeriodico = Model.searchPeriodico }))
-
-    </div>
 </div>
+    </div>
