@@ -35,7 +35,7 @@ namespace QualisIC.Controllers
             var areaModel = from a in db.Areas select a;
             var classificacaoModel = from c in db.Classificacaos select c;
 
-            ViewBag.AreaModel = areaModel.ToList();
+            ViewBag.AreaModel = areaModel.OrderBy(a => a.Area_name).ToList();
             ViewBag.ClassificacaoModel = classificacaoModel.ToList();
             if (!String.IsNullOrEmpty(vm.searchPeriodico))
             {

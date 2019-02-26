@@ -9,13 +9,13 @@
     <div class="container rowFiltro">
         <div style="width: 100%" class="row form-inline">
             <div class="col-2">
-                @Html.TextBox("searchISSN", "Filtrar por ISSN", new { @class = "form-control inputFiltro" })
+                @Html.TextBox("searchISSN", "", new { @class = "form-control inputFiltro", @placeholder = "Filtrar por ISSN" })
             </div>
             <div class="col-2">
-                @Html.TextBox("searchPeriodico", "Filtrar por Periodico", new { @class = "form-control inputFiltro" })
+                @Html.TextBox("searchPeriodico", "", new { @class = "form-control inputFiltro", @placeholder = "Filtrar por Periódico" })
             </div>
             <div class="col-2">
-                @Html.TextBox("searchExtrato", "Filtrar por Extrato", new { @class = "form-control inputFiltro" })
+                @Html.TextBox("searchExtrato", "", new { @class = "form-control inputFiltro", @placeholder = "Filtrar por Extrato" })
             </div>
             <div class="col-2">
                 @Html.DropDownList("searchArea", new SelectList(ViewBag.AreaModel, "Area_ID", "Area_name"), "Selecionar Area", new { @class = "dropdown btn dropdown-toggle dropdownArea inputFiltro" })
@@ -27,8 +27,6 @@
                 <input type="submit" value="Aplicar filtros" style="margin-left: 20px" class="btn btn-primary" />
                 <input type="hidden" name="page" id="page" value="1" />
             </div>
-
-
         </div>
     </div>
 }
@@ -57,4 +55,3 @@
     @Html.PagedListPager(Model.listap, page => Url.Action("Index", new { page, sortOrder = Model.sortOrder, searchArea = Model.searchArea, searchExtrato = Model.searchExtrato, searchISSN = Model.searchISSN, searchPeriodico = Model.searchPeriodico }))
 
 </div>
-    </div>
